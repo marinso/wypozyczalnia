@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="377.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wypozyczalnia.samochodow.controllers.PracownicyController">
+   <children>
+      <HBox prefHeight="377.0" prefWidth="1000.0">
+         <children>
+            <VBox>
+               <children>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Label text="Wybierz pracownika">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ComboBox fx:id="usunPracownikaBox" onAction="#boxOnAction" prefWidth="150.0" />
+                        <Button fx:id="usunPracownikaButton" mnemonicParsing="false" onAction="#usunPracownikaOnAction" text="Usuń " />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                        <Label alignment="TOP_CENTER" contentDisplay="BOTTOM" text="DODAJ PRACOWNIKA" textAlignment="CENTER" textFill="#3f3c79">
+                           <font>
+                              <Font name="System Italic" size="27.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="103.0" text="IMIE: " />
+                        <TextField fx:id="textFieldName" prefHeight="25.0" prefWidth="143.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Label alignment="TOP_LEFT" prefHeight="17.0" prefWidth="104.0" text="NAZWISKO:" />
+                        <TextField fx:id="textFieldSurname" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="105.0" text="PENSJA:" />
+                        <TextField fx:id="textFieldSalary" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="107.0" text="NUMER TELEFONU:" />
+                        <TextField fx:id="texFieldNumber" prefHeight="25.0" prefWidth="147.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="448.0">
+                     <children>
+                        <Button fx:id="addPracownik" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#dodajPracownikaOnAction" text="DODAJ PRACOWNIKA" />
+                     </children>
+                     <padding>
+                        <Insets top="50.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <TableView fx:id="pracownicyTableView" editable="true" prefHeight="377.0" prefWidth="483.0">
+              <columns>
+                  <TableColumn fx:id="IDCOLIMN" prefWidth="44.0" text="ID" />
+                <TableColumn fx:id="imieTableColumn" onEditCommit="#editImie" prefWidth="97.0" text="IMIE" />
+                <TableColumn fx:id="nazwiskoTableColumn" onEditCommit="#editNaziwsko" prefWidth="99.0" text="NAZWISKO" />
+                  <TableColumn fx:id="pensjaTableColumn" onEditCommit="#editPensja" prefWidth="116.0" text="PENSJA" />
+                  <TableColumn fx:id="nrTelTableColumn" onEditCommit="#editNrTele" prefWidth="122.0" text="NUMER TELEFONU" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+   </children>
+</VBox>

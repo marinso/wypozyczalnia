@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="669.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wypozyczalnia.samochodow.controllers.WypozyczeniaTableViewController">
+   <children>
+      <HBox prefHeight="58.0" prefWidth="669.0">
+         <children>
+            <Label text="KLIENT:">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+               </HBox.margin>
+            </Label>
+            <ComboBox fx:id="comboKlient" onAction="#comboKlientOnAction" prefWidth="150.0">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+      </HBox>
+      <TableView fx:id="WypozyczeniaTableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="313.0" prefWidth="693.0">
+        <columns>
+          <TableColumn fx:id="ID_COLUMN" prefWidth="44.0" text="ID" />
+          <TableColumn fx:id="ID_KLIENT_COLUMN" prefWidth="129.0" text="IMIE NAZWISKO ID " />
+            <TableColumn fx:id="SAMOCHOD_COLUMN" minWidth="0.0" prefWidth="103.0" text="SAMOCHÓD" />
+            <TableColumn fx:id="PRACOWNIK_COLUMN" prefWidth="103.0" text="PRACOWNIK" />
+            <TableColumn fx:id="DATA_COLUMN" minWidth="1.0" prefWidth="171.0" text="DATA WYPOŻYCZENIA" />
+            <TableColumn fx:id="CZY_ZWRCONY_COLUMN" prefWidth="118.0" text="CZY_ZWROCONY" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>

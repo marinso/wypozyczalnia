@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WypozyczalniaSamochodow:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WypozyczalniaSamochodow_jar</output-path>
+    <root id="archive" name="WypozyczalniaSamochodow.jar">
+      <element id="module-output" name="WypozyczalniaSamochodow" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/j256/ormlite/ormlite-jdbc/5.0/ormlite-jdbc-5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/j256/ormlite/ormlite-core/5.0/ormlite-core-5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/h2database/h2/1.4.197/h2-1.4.197.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
