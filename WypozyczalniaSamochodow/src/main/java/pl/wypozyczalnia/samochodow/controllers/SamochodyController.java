@@ -6,6 +6,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.BooleanStringConverter;
 import pl.wypozyczalnia.samochodow.modelFx.SamochodFx;
 import pl.wypozyczalnia.samochodow.modelFx.SamochodModel;
+import pl.wypozyczalnia.samochodow.utils.Alerts;
+import pl.wypozyczalnia.samochodow.utils.Check;
 
 public class SamochodyController {
 
@@ -63,10 +65,18 @@ public class SamochodyController {
     }
 
     public void dodajOnAction(){
-        this.samochodModel.objectPropertySamochodyProperty().get().modelProperty().bind(modelTextField.textProperty());
-        this.samochodModel.objectPropertySamochodyProperty().get().cena_za_dzienProperty().bind(cenaTextField.textProperty());
+        if(Check.sameCyfry(cenaTextField.getText()) == true) {
+            this.samochodModel.objectPropertySamochodyProperty().get().modelProperty().bind(modelTextField.textProperty());
+            this.samochodModel.objectPropertySamochodyProperty().get().cena_za_dzienProperty().bind(cenaTextField.textProperty());
+            samochodModel.saveSamochodyInDataBase();
+            clear();
+        } else {
+            Alerts.warrningAlert("BŁĄD", "Wprowadzono niewłaściwe dane");
+            clear();
+        }
+    }
 
-        samochodModel.saveSamochodyInDataBase();
+    private void clear() {
         modelTextField.clear();
         cenaTextField.clear();
     }

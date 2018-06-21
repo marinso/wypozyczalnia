@@ -6,23 +6,33 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import pl.wypozyczalnia.samochodow.database.dao.KlienciDao;
 import pl.wypozyczalnia.samochodow.database.dao.SamochodyDao;
+import pl.wypozyczalnia.samochodow.database.dao.WypozyczeniaDao;
 import pl.wypozyczalnia.samochodow.database.dbutils.DbManager;
 import pl.wypozyczalnia.samochodow.database.models.Klienci;
+import pl.wypozyczalnia.samochodow.database.models.Wypozyczenia;
+import pl.wypozyczalnia.samochodow.utils.Alerts;
+import pl.wypozyczalnia.samochodow.utils.Utils;
 import pl.wypozyczalnia.samochodow.utils.converters.ConverterKlient;
+import pl.wypozyczalnia.samochodow.utils.converters.ConverterWypozyczenia;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class KlientModel {
 
-    private ObservableList<KlientFx> observableListKlienci = FXCollections.observableArrayList();
-    private ObjectProperty<KlientFx> objectPropertyKlienci = new SimpleObjectProperty<>(new KlientFx());
+    private ObservableList<KlientFx> observableListKlienci     = FXCollections.observableArrayList();
+    private ObjectProperty<KlientFx> objectPropertyKlienci     = new SimpleObjectProperty<>(new KlientFx());
     private ObjectProperty<KlientFx> objectPropertyEditKlienci = new SimpleObjectProperty<>();
+
+    private List<WypozyczSamochodFX>           wypozyczeniaFxList         = new ArrayList<>();
 
     public void init() {
         observableListKlienci.clear();
         KlienciDao klienciDao = new KlienciDao();
         List<Klienci> klienci = klienciDao.queryForAll(Klienci.class);
-        klienci.forEach(e->{
+        klienci.forEach(e -> {
             KlientFx KlientFx = new KlientFx();
             KlientFx.setId(e.getId_klienta());
             KlientFx.setName(e.getName());
@@ -50,11 +60,34 @@ public class KlientModel {
         DbManager.closeConnectionSource();
     }
 
-    public void deleteById(){
-        SamochodyDao samochodyDao = new SamochodyDao();
-        samochodyDao.deleteById(Klienci.class,objectPropertyKlienci.getValue().getId());
-        init();
-        DbManager.closeConnectionSource();
+    public void deleteById() {
+        WypozyczeniaDao wypozyczeniaDao = new WypozyczeniaDao();
+        wypozyczeniaFxList.clear();
+        List<Wypozyczenia> wypozyczenia = wypozyczeniaDao.queryForAll(Wypozyczenia.class);
+        wypozyczenia.forEach(e -> {
+            wypozyczeniaFxList.add(ConverterWypozyczenia.convertToWypozyczeniaFx(e));
+        });
+
+        if(filterPredicate(predicateKlient())) {
+            KlienciDao klienciDao = new KlienciDao();
+            klienciDao.deleteById(Klienci.class, objectPropertyKlienci.getValue().getId());
+            init();
+            DbManager.closeConnectionSource();
+        } else {
+            Alerts.warrningAlert("BŁĄD", "samochod jest użyty w bazie");
+        }
+    }
+
+    private Predicate<WypozyczSamochodFX> predicateKlient() {
+        return wypozyczSamochodFX -> wypozyczSamochodFX.getKlienciFx().getId() == getObjectPropertyKlienci().getId();
+    }
+
+    private boolean filterPredicate(Predicate<WypozyczSamochodFX> predicate) {
+        List<WypozyczSamochodFX> list = wypozyczeniaFxList.stream().filter(predicate).collect(Collectors.toList());
+        if(list.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     public ObservableList<KlientFx> getObservableListKlienci() {

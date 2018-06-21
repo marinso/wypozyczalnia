@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import pl.wypozyczalnia.samochodow.modelFx.KlientFx;
 import pl.wypozyczalnia.samochodow.modelFx.KlientModel;
+import pl.wypozyczalnia.samochodow.utils.Alerts;
+import pl.wypozyczalnia.samochodow.utils.Check;
 
 public class KlienciController {
 
@@ -26,10 +28,6 @@ public class KlienciController {
     @FXML
     public void initialize() {
         this.klientModel = new KlientModel();
-        this.klientModel.objectPropertyKlienciProperty().get().nameProperty().bind(imieTextField.textProperty());
-        this.klientModel.objectPropertyKlienciProperty().get().surnameProperty().bind(nazwiskoTextField.textProperty());
-        this.klientModel.objectPropertyKlienciProperty().get().nrtelProperty().bind(nrTelTextField.textProperty());
-
         klientModel.init();
         klienciCombobox.setItems(this.klientModel.getObservableListKlienci());
 
@@ -64,8 +62,23 @@ public class KlienciController {
     }
 
     public void dodajOnAction() {
-        initialize();
-        klientModel.saveKlienciInDataBase();
+        if((Check.numerTel(nrTelTextField.getText())
+                && Check.sameLitery(imieTextField.getText())
+                && Check.sameLitery(nazwiskoTextField.getText())
+        )== true) {
+            this.klientModel.objectPropertyKlienciProperty().get().nameProperty().bind(imieTextField.textProperty());
+            this.klientModel.objectPropertyKlienciProperty().get().surnameProperty().bind(nazwiskoTextField.textProperty());
+            this.klientModel.objectPropertyKlienciProperty().get().nrtelProperty().bind(nrTelTextField.textProperty());
+
+            klientModel.saveKlienciInDataBase();
+            clear();
+        } else {
+            Alerts.warrningAlert("BŁĄD", "Wprowadzono niewłaściwe dane");
+            clear();
+        }
+    }
+
+    private void clear() {
         imieTextField.clear();
         nazwiskoTextField.clear();
         nrTelTextField.clear();

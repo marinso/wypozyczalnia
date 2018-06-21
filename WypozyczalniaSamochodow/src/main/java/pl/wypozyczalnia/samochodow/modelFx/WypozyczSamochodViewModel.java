@@ -1,6 +1,8 @@
 package pl.wypozyczalnia.samochodow.modelFx;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +31,7 @@ public class WypozyczSamochodViewModel {
     public void init(){
         WypozyczeniaDao wypozyczeniaDao = new WypozyczeniaDao();
         List<Wypozyczenia> wypozyczenia = wypozyczeniaDao.queryForAll(Wypozyczenia.class);
+        wypozyczSamochodFXObservableList.clear();
         wypozyczenia.forEach(e->{
             this.wypozyczeniaFxList.add(ConverterWypozyczenia.convertToWypozyczeniaFx(e));
         });
@@ -36,12 +39,32 @@ public class WypozyczSamochodViewModel {
         initKlientFx();
     }
 
+    public void Czy_zwrocony() {
+        wypozyczSamochodFXObservableList.clear();
+        WypozyczeniaDao wypozyczeniaDao = new WypozyczeniaDao();
+        List<Wypozyczenia> wypozyczenia = wypozyczeniaDao.queryForAll(Wypozyczenia.class);
+        wypozyczenia.forEach(e->{
+            if(klientFxObjectProperty.getValue() == null) {
+                if (e.getCzy_zwrocony().equals(false)) {
+                    this.wypozyczSamochodFXObservableList.add(ConverterWypozyczenia.convertToWypozyczeniaFx(e));
+                }
+            } else {
+                if (e.getCzy_zwrocony().equals(false) && e.getKlienci().getId_klienta() == getKlientFxObjectProperty().getId()) {
+                    this.wypozyczSamochodFXObservableList.add(ConverterWypozyczenia.convertToWypozyczeniaFx(e));
+                }
+            }
+        });
+
+    }
+
     public void filterWypozyczeniaList(){
         if(getKlientFxObjectProperty() != null){
             filterPredicate(predicateKlient());
-        } else
+        }
+        else
             this.wypozyczSamochodFXObservableList.setAll(wypozyczeniaFxList);
     }
+
 
     private void initKlientFx() {
         KlienciDao klienciDao = new KlienciDao();
@@ -64,17 +87,11 @@ public class WypozyczSamochodViewModel {
         return wypozyczSamochodFXObservableList;
     }
 
-    public void setWypozyczSamochodFXObservableList(ObservableList<WypozyczSamochodFX> wypozyczSamochodFXObservableList) {
-        this.wypozyczSamochodFXObservableList = wypozyczSamochodFXObservableList;
-    }
 
     public ObservableList<KlientFx> getKlientFxObservableList() {
         return klientFxObservableList;
     }
 
-    public void setKlientFxObservableList(ObservableList<KlientFx> klientFxObservableList) {
-        this.klientFxObservableList = klientFxObservableList;
-    }
 
     public KlientFx getKlientFxObjectProperty() {
         return klientFxObjectProperty.get();
@@ -82,10 +99,6 @@ public class WypozyczSamochodViewModel {
 
     public ObjectProperty<KlientFx> klientFxObjectPropertyProperty() {
         return klientFxObjectProperty;
-    }
-
-    public void setKlientFxObjectProperty(KlientFx klientFxObjectProperty) {
-        this.klientFxObjectProperty.set(klientFxObjectProperty);
     }
 }
 

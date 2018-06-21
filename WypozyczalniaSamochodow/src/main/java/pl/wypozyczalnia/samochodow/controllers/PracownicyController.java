@@ -13,6 +13,8 @@ import javafx.util.converter.NumberStringConverter;
 import pl.wypozyczalnia.samochodow.database.models.Pracownicy;
 import pl.wypozyczalnia.samochodow.modelFx.PracownicyFx;
 import pl.wypozyczalnia.samochodow.modelFx.PracownicyModel;
+import pl.wypozyczalnia.samochodow.utils.Alerts;
+import pl.wypozyczalnia.samochodow.utils.Check;
 
 
 public class PracownicyController {
@@ -83,12 +85,28 @@ public class PracownicyController {
     }
 
     public void dodajPracownikaOnAction() {
-        this.pracownicyModel.objectPropertyPracownicyProperty().get().nameProperty().bind(textFieldName.textProperty());
-        this.pracownicyModel.objectPropertyPracownicyProperty().get().surnameProperty().bind(textFieldSurname.textProperty());
-        this.pracownicyModel.objectPropertyPracownicyProperty().get().pensjaProperty().bind(textFieldSalary.textProperty());
-        this.pracownicyModel.objectPropertyPracownicyProperty().get().numerTelProperty().bind(texFieldNumber.textProperty());
+        if((Check.sameLitery(textFieldName.getText())
+                && Check.sameLitery(textFieldSurname.getText())
+                && Check.sameCyfry(textFieldSalary.getText())
+                && Check.numerTel(texFieldNumber.getText())
+        ) == true) {
+            System.out.println(Check.sameLitery(textFieldName.getText()));
+            this.pracownicyModel.objectPropertyPracownicyProperty().get().nameProperty().bind(textFieldName.textProperty());
+            this.pracownicyModel.objectPropertyPracownicyProperty().get().surnameProperty().bind(textFieldSurname.textProperty());
+            this.pracownicyModel.objectPropertyPracownicyProperty().get().pensjaProperty().bind(textFieldSalary.textProperty());
+            this.pracownicyModel.objectPropertyPracownicyProperty().get().numerTelProperty().bind(texFieldNumber.textProperty());
 
-        pracownicyModel.savePracownicyInDataBase();
+            pracownicyModel.savePracownicyInDataBase();
+            clear();
+        } else {
+            Alerts.warrningAlert("BŁĄD", "Wprowadzono niewłaściwe dane");
+            clear();
+        }
+
+
+    }
+
+    private void clear() {
         texFieldNumber.clear();
         textFieldName.clear();
         textFieldSalary.clear();

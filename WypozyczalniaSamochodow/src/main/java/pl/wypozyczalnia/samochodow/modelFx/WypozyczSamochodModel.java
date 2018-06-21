@@ -91,6 +91,8 @@ public class WypozyczSamochodModel {
         WypozyczeniaDao wypozyczeniaDao = new WypozyczeniaDao();
         wypozyczeniaDao.creatOrUpdate(wypozyczenia);
 
+
+        init();
         DbManager.closeConnectionSource();
     }
 

@@ -87,6 +87,6 @@ public class WypozyczSamochodFX {
 
     @Override
     public String toString() {
-        return "ID: " + id.getValue() + " " +klienciFx.get().getSurname() + " " + klienciFx.get().getName();
+        return klienciFx.get().getSurname() + " " + klienciFx.get().getName() + " " + samochodyFxProperty().get().getModel();
     }
 }
